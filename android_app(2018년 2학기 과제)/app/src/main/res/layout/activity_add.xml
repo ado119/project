@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+        <ImageView
+            android:src="@drawable/addphoto"
+            android:id="@+id/imageView"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"/>
+
+        <EditText
+            android:id="@+id/edtPlace"
+            android:layout_below="@id/imageView"
+            android:hint="장소"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ems="10"/>
+
+        <EditText
+            android:id="@+id/edtPeople"
+            android:layout_below="@id/edtPlace"
+            android:hint="수용인원"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ems="10"/>
+
+        <EditText
+            android:id="@+id/edtLa"
+            android:layout_below="@id/edtPeople"
+            android:inputType="numberDecimal"
+            android:hint="위도"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ems="10"/>
+
+        <EditText
+            android:id="@+id/edtLong"
+            android:layout_below="@id/edtLa"
+            android:hint="경도"
+            android:inputType="numberDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ems="10"/>
+
+        <Button
+            android:id="@+id/btnadd"
+            android:layout_below="@+id/edtLong"
+            android:layout_centerHorizontal="true"
+            android:minWidth="160dp"
+            android:text="추가하기"
+            android:textColor="@color/colorPrimary"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnList"
+            android:layout_below="@+id/btnadd"
+            android:layout_centerHorizontal="true"
+            android:minWidth="160dp"
+            android:text="목록"
+            android:textColor="@color/colorPrimary"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</ScrollView>

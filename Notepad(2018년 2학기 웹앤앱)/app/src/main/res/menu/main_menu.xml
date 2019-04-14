@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/logout_action"
+        android:title="Logout"
+        android:icon="@drawable/logout"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/change_action"
+        android:title="change"
+        android:icon="@drawable/change_account"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/real_touch_memo"
+        android:title="터치메모"
+        android:icon="@drawable/touch_memo"
+        app:showAsAction="ifRoom"
+        />
+
+</menu>
