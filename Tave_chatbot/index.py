@@ -155,7 +155,7 @@ def dust():
     fine_dust_info = soup.body.pm25grade1h.text
 
     if dust_info == '1':
-        dust_result = '좋다~ 한강가자~ ٩(^ᴗ^)۶'
+        dust_result = '좋다~ \n한강가자~ ٩(^ᴗ^)۶'
     elif dust_info == '2':
         dust_result = '보통'
     elif dust_info == '3':
@@ -339,7 +339,7 @@ def food():
             result.append('관심')
     
     
-    result = ('식중독 최근 측정시간은 {0}월 {1}일 {2}시입니다.오늘의 식중독지수 등급은 {3}입니다. 내일의 식중독지수 등급은 {4}입니다.'.
+    result = ('식중독 최근 측정시간은 {0}월 {1}일 {2}시입니다. \n오늘의 식중독지수 등급은 {3}입니다. \n내일의 식중독지수 등급은 {4}입니다.'.
          format(soup.body.date.text[4:6], soup.body.date.text[6:8], soup.body.date.text[8:10], result[0], result[1]))
     
     res = {
@@ -355,7 +355,47 @@ def food():
         }
     }
     return jsonify(res)
+
+
+@app.route("/ultraviolet", methods=["POST"])
+def ultraviolet():
+    ## 자외선 지수 보여주는 함수
     
+    url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=자외선'
+    req = requests.get(url).text
+    soup = BeautifulSoup(req, 'html.parser')
+    uv = soup.select_one('.txt_state').text
+    uv = int(uv)
+    
+    if uv <= 2:
+        ultraviolet = '자외선 지수 낮은 상태입니다. 편하게 다니세요'
+    elif uv <= 5:
+        ultraviolet = '자외선 지수 보통 상태입니다. 선크림 발라주세요.'
+    elif uv <= 7:
+        ultraviolet = '자외선 지수 높음 상태입니다. 선크림 필수에요!'
+    elif uv <= 10:
+        ultraviolet = '자외선 지수 매우 높음입니다. 실외활동 자제해주세요.'
+    elif uv >= 11:
+        ultraviolet = '자외선 지수 위험입니다. 나가면 죽어요!!'
+    else:
+        ultraviolet = '지금 에러났네요. 고쳐놓을께요 ㅠㅠ'
+        
+    
+    res = {
+        "version": "2.0",
+        "template": {
+            "outputs": [
+                {
+                    "simpleText": {
+                        "text": ultraviolet
+                    }
+                }
+            ]
+        }
+    }
+
+    return jsonify(res)
+
 
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', threaded = True)
