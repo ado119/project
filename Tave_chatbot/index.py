@@ -1,3 +1,6 @@
+import normal_res
+import image_res
+import cookie
 import random
 import requests
 from bs4 import BeautifulSoup
@@ -5,6 +8,20 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
+
+
+@app.route("/cookie", methods=["POST"])
+def fortune_cookie():
+    ## 포춘 쿠기
+
+    ran = random.randint(0, 26)
+    message = cookie.fortune(ran)
+
+
+    res = normal_res.normal(message)
+    
+    
+    return jsonify(res)
 
 
 @app.route("/kospi", methods=["POST"])
@@ -16,19 +33,10 @@ def kospi():
     soup = BeautifulSoup(response, 'html.parser')
     kospi = soup.select_one('#KOSPI_now').text
     kospi = "현재 코스피 지수는 " + kospi + "입니다."
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": kospi
-                    }
-                }
-            ]
-        }
-    }
-
+    
+    res = normal_res.normal(kospi)
+    
+    
     return jsonify(res)
 
 
@@ -44,18 +52,9 @@ def lotto():
 
     lotto = "로또번호 추천: " + itemLotto
 
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": lotto
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(lotto)
+    
+    
     return jsonify(res)
 
 
@@ -65,8 +64,8 @@ def finance():
 
     url = 'https://finance.naver.com/marketindex/exchangeList.nhn'
 
-    response = requests.get(url).text    
-
+    response = requests.get(url).text
+    
     soup = BeautifulSoup(response, 'html.parser')
 
     nation_list = soup.select(".tit")
@@ -86,18 +85,10 @@ def finance():
 
     finance = "현재 환율입니다. \n" + chat
 
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": finance
-                    }
-                }
-            ]
-        }
-    }
+    
+    res = normal_res.normal(finance)
+    
+    
     return jsonify(res)
 
 
@@ -128,18 +119,9 @@ def NaverSearch():
 
     SearchList = "현재 naver 실시간 급상승 검색어! \n" + chat
 
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": SearchList
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(SearchList)
+
+    
     return jsonify(res)
 
 
@@ -180,18 +162,9 @@ def dust():
                  soup.body.pm25value24.text,
                  fine_dust_result))
 
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": dust_info
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(dust_info)
+    
+    
     return jsonify(res)
 
 
@@ -214,19 +187,10 @@ def dice():
     else:
         DiceUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-f5YFpjsFIftTwUSWiu63Cd0oSE3x4WUf2U1f1VfWCQ6R6v-p'
     
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleImage": {
-                        "imageUrl": DiceUrl,
-                        "altText": "주사위입니다."
-                    }
-                }
-            ]
-        }
-    }
+    
+    res = image_res.image(DiceUrl)
+    
+
     return jsonify(res)
 
 
@@ -244,18 +208,9 @@ def temperature():
 
     temperature = "현재 기온은 " + temp + "입니다 :)"
 
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": temperature
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(temperature)
+    
+    
     return jsonify(res)
 
 @app.route("/heat", methods=["POST"])
@@ -288,23 +243,14 @@ def heat():
     
     
     heat = ('더위 체감지수 측정시간은 {0}월 {1}일 {2}시입니다.\n측정시간으로 부터 3시간 후인{3}시의 더위 체감지수 등급은 {4}입니다.\n측정시간으로 부터 6시간 후인{5}시의 더위 체감지수 등급은 {6}입니다.\n측정시간으로 부터 9시간 후인{7}시의 더위 체감지수 등급은 {8}입니다.\n측정시간으로 부터 12시간 후인{9}시의 더위 체감지수 등급은 {10}입니다.'.
-         format(soup.body.date.text[4:6], soup.body.date.text[6:8], soup.body.date.text[8:10], now.hour+3,B[0],
+         format(soup.body.date.text[4:6], soup.body.date.text[6:8], soup.body.date.text[8:10], now.hour+3,HeatStd[0],
                now.hour+6, HeatStd[1],
                now.hour+9, HeatStd[2],
                now.hour+12, HeatStd[3]))
     
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": heat
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(heat)
+    
+    
     return jsonify(res)
 
 
@@ -342,31 +288,22 @@ def food():
     result = ('식중독 최근 측정시간은 {0}월 {1}일 {2}시입니다. \n오늘의 식중독지수 등급은 {3}입니다. \n내일의 식중독지수 등급은 {4}입니다.'.
          format(soup.body.date.text[4:6], soup.body.date.text[6:8], soup.body.date.text[8:10], result[0], result[1]))
     
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": result
-                    }
-                }
-            ]
-        }
-    }
+    res = normal_res.normal(result)
+    
+    
     return jsonify(res)
 
 
 @app.route("/ultraviolet", methods=["POST"])
 def ultraviolet():
     ## 자외선 지수 보여주는 함수
-    
+
     url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=자외선'
     req = requests.get(url).text
     soup = BeautifulSoup(req, 'html.parser')
     uv = soup.select_one('.txt_state').text
     uv = int(uv)
-    
+
     if uv <= 2:
         ultraviolet = '자외선 지수 낮은 상태입니다. 편하게 다니세요'
     elif uv <= 5:
@@ -379,20 +316,9 @@ def ultraviolet():
         ultraviolet = '자외선 지수 위험입니다. 나가면 죽어요!!'
     else:
         ultraviolet = '지금 에러났네요. 고쳐놓을께요 ㅠㅠ'
-        
-    
-    res = {
-        "version": "2.0",
-        "template": {
-            "outputs": [
-                {
-                    "simpleText": {
-                        "text": ultraviolet
-                    }
-                }
-            ]
-        }
-    }
+
+    res = normal_res.normal(ultraviolet)
+
 
     return jsonify(res)
 
